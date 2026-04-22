@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank313 - Configuration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #0089ff; --sidebar-active-bg: #eef2f7; --bg: #f8fafc; --text-dark: #1a202c; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-dark); display: flex; min-height: 100vh; }
+        .sidebar { width: 240px; background: #ffffff; border-right: 1px solid var(--border); padding: 1.5rem; display: flex; flex-direction: column; height: 100vh; position: sticky; top: 0; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 2.5rem; }
+        .nav-link { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; text-decoration: none; color: #4a5568; border-radius: 8px; font-weight: 500; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .nav-link.active { background: var(--sidebar-active-bg); color: var(--primary); }
+        .main-content { flex: 1; padding: 2rem; }
+        .card { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .config-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #f7fafc; }
+        .config-label h4 { font-size: 0.95rem; font-weight: 600; }
+        .config-label p { font-size: 0.8rem; color: #718096; }
+        .config-input { display: flex; align-items: center; gap: 1rem; }
+        .badge-live { padding: 0.2rem 0.5rem; background: #ebf8ff; color: #4299e1; border-radius: 4px; font-size: 0.7rem; font-weight: 700; height: fit-content; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">bank313</div>
+        <a href="/admin/advanced" class="nav-link"><i class="fas fa-th-large"></i> Dashboard</a>
+        <a href="#" class="nav-link"><i class="fas fa-users-cog"></i> User Management</a>
+        <a href="/admin/leads" class="nav-link"><i class="fas fa-briefcase"></i> Leads</a>
+        <a href="/admin/advanced-applications" class="nav-link"><i class="fas fa-file-invoice"></i> Applications</a>
+        <a href="/admin/reports" class="nav-link"><i class="fas fa-chart-pie"></i> Reports</a>
+        <a href="/admin/config" class="nav-link active"><i class="fas fa-cog"></i> Configuration</a>
+        <a href="/admin/audit" class="nav-link"><i class="fas fa-history"></i> Audit Trail</a>
+    </div>
+    <div class="main-content">
+        <div class="card">
+            <h2>System Configuration</h2>
+            <p style="font-size: 0.85rem; color: #718096; margin-top: 0.5rem;">Manage your project's environmental settings.</p>
+            <div style="margin-top: 2rem;">
+                {% for label, val in settings.items() %}
+                <div class="config-item">
+                    <div class="config-label">
+                        <h4>{{ label }}</h4>
+                        <p>Global system parameter</p>
+                    </div>
+                    <div class="config-input">
+                        <span style="font-weight: 600; color: var(--primary);">{{ val }}</span>
+                        <span class="badge-live">LIVE</span>
+                        <i class="fas fa-edit" style="color:#cbd5e0; cursor:pointer;"></i>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button style="margin-top:2rem; width:100%; border:none; background:var(--primary); color:white; padding:1rem; border-radius:8px; font-weight:700; cursor:pointer;">Save All Changes</button>
+        </div>
+    </div>
+</body>
+</html>
