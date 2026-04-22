@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banku - Smart Banking Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a3ffc;
+            --primary-dark: #6929c4;
+            --bg: #f8f7fd;
+            --white: #ffffff;
+            --text-main: #1a1d23;
+            --text-muted: #9ba1ad;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+
+        .landing-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8f7fd 0%, #ffffff 100%);
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-section {
+            text-align: center;
+            max-width: 900px;
+            z-index: 2;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover {
+            transform: scale(1.02);
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), #00d2ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 10px 20px rgba(138, 63, 252, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(138, 63, 252, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--text-main);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .bg-circles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.2;
+        }
+
+        .circle-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            right: -100px;
+        }
+
+        .circle-2 {
+            width: 300px;
+            height: 300px;
+            background: #00d2ff;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        @media (max-height: 800px) {
+            .hero-image { max-width: 400px; }
+            .hero-title { font-size: 2.25rem; }
+            .hero-subtitle { margin-bottom: 1.5rem; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="landing-container">
+        <div class="bg-circles">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+        </div>
+
+        <div class="hero-section">
+            <!-- Use the user provided image context -->
+            <img src="{{ url_for('static', filename='images/hero.png') }}" alt="Bank Loan Hero" class="hero-image">
+            
+            <h1 class="hero-title">Welcome to bank loans</h1>
+            <p class="hero-subtitle">Your gateway to intelligent, hassle-free loan management and financial growth.</p>
+            
+            <div class="cta-group">
+                <a href="/login" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login Now
+                </a>
+                <a href="/register" class="btn btn-secondary">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

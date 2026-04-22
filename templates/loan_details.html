@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ loan_name }} - Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a3ffc;
+            --white: #ffffff;
+            --text-main: #1a1d23;
+            --text-muted: #9ba1ad;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f8f7fd; color: var(--text-main); }
+
+        .hero {
+            height: 50vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ image_url }}');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .hero h1 { font-size: 3.5rem; font-weight: 700; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+        .container { max-width: 1000px; margin: -5rem auto 4rem; position: relative; z-index: 10; padding: 0 2rem; }
+
+        .details-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #f0f1f3;
+        }
+
+        .stat-item h4 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .stat-item p { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+
+        .info-content h2 { margin-bottom: 1.5rem; font-size: 1.75rem; }
+        .info-content p { color: #5a6270; line-height: 1.8; margin-bottom: 2.5rem; font-size: 1.1rem; }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-item { display: flex; align-items: center; gap: 1rem; color: #5a6270; font-size: 0.95rem; }
+        .feature-item i { color: #48bb78; }
+
+        .actions { display: flex; gap: 1.5rem; }
+        .btn { padding: 1.25rem 2.5rem; border-radius: 16px; font-weight: 700; font-size: 1.1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.75rem; transition: all 0.3s; cursor: pointer; border: none; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 25px rgba(138, 63, 252, 0.3); }
+        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(138, 63, 252, 0.4); }
+        .btn-outline { background: white; color: var(--text-main); border: 2px solid #f0f1f3; }
+        .btn-outline:hover { background: #fafafa; }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+            .features { grid-template-columns: 1fr; }
+            .actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>{{ loan_name }}</h1>
+    </div>
+
+    <div class="container">
+        <div class="details-card">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h4>Interest Rate</h4>
+                    <p>{{ interest }}% p.a.</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Max Amount</h4>
+                    <p>₹{{ max_amount }} Lakhs</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Max Tenure</h4>
+                    <p>{{ tenure }} Months</p>
+                </div>
+            </div>
+
+            <div class="info-content">
+                <h2>Product Overview</h2>
+                <p>{{ description }}</p>
+
+                <h2>Key Benefits</h2>
+                <div class="features">
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> Instant online approval process</div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> Minimal documentation required</div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> Flexible repayment options</div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> Zero hidden processing fees</div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> 24/7 dedicated customer support</div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> Lowest interest rates in the market</div>
+                </div>
+
+                <div class="actions">
+                    <a href="{{ form_url }}" class="btn btn-primary">Apply Now <i class="fas fa-arrow-right"></i></a>
+                    <a href="/apply" class="btn btn-outline">Back to All Loans</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

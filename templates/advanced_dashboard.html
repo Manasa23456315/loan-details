@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank313 - Advanced Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0089ff;
+            --primary-bg: #f5f9ff;
+            --sidebar-text: #4a5568;
+            --sidebar-active-bg: #eef2f7;
+            --card-bg: #ffffff;
+            --bg: #f8fafc;
+            --text-dark: #1a202c;
+            --border: #e2e8f0;
+            --green: #48bb78;
+            --orange: #ed8936;
+            --red: #f56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .logo span {
+            font-size: 0.65rem;
+            color: #718096;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: var(--sidebar-text);
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link.active {
+            background: var(--sidebar-active-bg);
+            color: var(--primary);
+        }
+
+        .nav-link:hover:not(.active) {
+            background: #f7fafc;
+            color: var(--text-dark);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 { font-size: 1.5rem; font-weight: 700; }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+        }
+
+        select {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4a5568;
+            outline: none;
+        }
+
+        /* Cards Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Loan Application Stats Card */
+        .app-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            flex: 1;
+            gap: 2rem;
+        }
+
+        .stat-item h4 {
+            font-size: 0.75rem;
+            color: #718096;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item .count {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-item .amount {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .stat-item.approved { border-left: 4px solid var(--green); padding-left: 1rem; }
+        .stat-item.open { border-left: 4px solid var(--orange); padding-left: 1rem; }
+        .stat-item.rejected { border-left: 4px solid var(--red); padding-left: 1rem; }
+        .stat-item.total { border-left: 4px solid #cbd5e0; padding-left: 1rem; }
+
+        .stat-chart-box {
+            width: 15rem;
+            height: 15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Approval Rate Gauge */
+        .approval-rate {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .gauge-container {
+            width: 100%;
+            height: 10rem;
+            position: relative;
+        }
+
+        .rate-text {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .rate-text h2 { font-size: 2rem; font-weight: 800; }
+        .rate-text p { font-size: 0.75rem; color: #718096; }
+
+        /* Loan Products Card */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-stat {
+            padding: 1rem;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .product-stat h5 {
+            font-size: 0.75rem;
+            color: #718096;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .product-stat h4 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+        .product-stat p { font-size: 0.9rem; font-weight: 700; }
+
+        /* Trend Card */
+        .trend-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .trend-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .trend-stat-val p { font-size: 0.75rem; color: #718096; }
+        .trend-stat-val h4 { font-size: 1.25rem; font-weight: 700; }
+
+        .chart-full {
+            height: 300px;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">
+            bank313
+            <span>powered by Calibo</span>
+        </div>
+        <a href="/admin/advanced" class="nav-link {{ 'active' if current_tab == 'dashboard' }}"><i class="fas fa-th-large"></i> Dashboard</a>
+        <a href="#" class="nav-link {{ 'active' if current_tab == 'users' }}"><i class="fas fa-users-cog"></i> User Management</a>
+        <a href="/admin/leads" class="nav-link {{ 'active' if current_tab == 'leads' }}"><i class="fas fa-briefcase"></i> Leads</a>
+        <a href="/admin/advanced-applications" class="nav-link {{ 'active' if current_tab == 'applications' }}"><i class="fas fa-file-invoice"></i> Applications</a>
+        <a href="/admin/reports" class="nav-link {{ 'active' if current_tab == 'reports' }}"><i class="fas fa-chart-pie"></i> Reports</a>
+        <a href="/admin/config" class="nav-link {{ 'active' if current_tab == 'config' }}"><i class="fas fa-cog"></i> Configuration</a>
+        <a href="/admin/audit" class="nav-link {{ 'active' if current_tab == 'audit' }}"><i class="fas fa-history"></i> Audit Trail</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <div class="filters">
+                <select>
+                    <option>First State Bank of Decatur</option>
+                </select>
+                <select>
+                    <option>Last 1 year</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-title">Loan Applications <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i></div>
+                <div class="app-stats">
+                    <div class="stats-info">
+                        <div class="stat-item approved">
+                            <h4><span style="color:var(--green)">●</span> Approved Applications</h4>
+                            <div class="count">{{ stats.approved_count }}</div>
+                            <p>Loan Amount</p>
+                            <div class="amount">₹{{ "{:,.0f}".format(stats.approved_amount) }}</div>
+                        </div>
+                        <div class="stat-item open">
+                            <h4><span style="color:var(--orange)">●</span> Open Applications</h4>
+                            <div class="count">{{ stats.pending_count }}</div>
+                            <p>Loan Amount</p>
+                            <div class="amount">₹{{ "{:,.0f}".format(stats.pending_amount) }}</div>
+                        </div>
+                        <div class="stat-item rejected">
+                            <h4><span style="color:var(--red)">●</span> Rejected Applications</h4>
+                            <div class="count">{{ stats.rejected_count }}</div>
+                            <p>Loan Amount</p>
+                            <div class="amount">₹{{ "{:,.0f}".format(stats.rejected_amount) }}</div>
+                        </div>
+                        <div class="stat-item total">
+                            <h4>Total Applications</h4>
+                            <div class="count">{{ stats.total_count }}</div>
+                            <p>Loan Amount</p>
+                            <div class="amount">₹{{ "{:,.0f}".format(stats.total_amount) }}</div>
+                        </div>
+                    </div>
+                    <div class="stat-chart-box">
+                        <canvas id="loanAppDonut"></canvas>
+                        <div style="position:absolute; text-align:center;">
+                            <p style="font-size:0.6rem; color:#718096;">Total Applications</p>
+                            <h3 style="font-size:1.2rem;">{{ stats.total_count }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Credit Approval Rate</div>
+                <div class="approval-rate">
+                    <div class="gauge-container">
+                        <canvas id="approvalGauge"></canvas>
+                        <div class="rate-text">
+                            <h2>{{ stats.approval_rate }}%</h2>
+                            <p>out of 100</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card-title">Loan Products</div>
+            <div style="display:flex; gap:2rem;">
+                <div style="flex:1;">
+                    <div class="products-grid">
+                        {% for type, data in stats.product_stats.items() %}
+                        <div class="product-stat">
+                            <h5>● {{ type }}</h5>
+                            <h4>{{ data.count }}</h4>
+                            <p>₹{{ "{:,.0f}".format(data.amount) }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="stat-chart-box">
+                    <canvas id="productDonut"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="trend-card-header">
+                <div class="card-title">Approved Loans</div>
+                <select>
+                    <option>All Loan Types</option>
+                </select>
+            </div>
+            <div class="trend-stats">
+                <div class="trend-stat-val">
+                    <p>Total Loan Amount</p>
+                    <h4>₹{{ "{:,.0f}".format(stats.approved_amount) }}</h4>
+                </div>
+                <div class="trend-stat-val">
+                    <p>Average Loan Amount</p>
+                    <h4>₹{{ "{:,.2f}".format(stats.approved_amount / stats.approved_count if stats.approved_count > 0 else 0) }} / Month</h4>
+                </div>
+            </div>
+            <div class="chart-full">
+                <canvas id="trendLine"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden data for Charts -->
+    <div id="dashboardData" 
+         data-approved="{{ stats.approved_count }}"
+         data-pending="{{ stats.pending_count }}"
+         data-rejected="{{ stats.rejected_count }}"
+         data-rate="{{ stats.approval_rate }}"
+         data-product-labels='{{ stats.product_labels|tojson }}'
+         data-product-counts='{{ stats.product_counts|tojson }}'
+         data-trend-labels='{{ stats.trend_labels|tojson }}'
+         data-trend-amounts='{{ stats.trend_amounts|tojson }}'
+         style="display: none;">
+    </div>
+
+    <script>
+        const dData = document.getElementById('dashboardData').dataset;
+        const pLabels = JSON.parse(dData.productLabels);
+        const pCounts = JSON.parse(dData.productCounts);
+        const tLabels = JSON.parse(dData.trendLabels);
+        const tAmounts = JSON.parse(dData.trendAmounts);
+
+        // Loan Application Donut
+        new Chart(document.getElementById('loanAppDonut'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Approved', 'Open', 'Rejected'],
+                datasets: [{
+                    data: [parseInt(dData.approved), parseInt(dData.pending), parseInt(dData.rejected)],
+                    backgroundColor: ['#48bb78', '#ed8936', '#f56565'],
+                    borderWidth: 0,
+                    cutout: '80%'
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        // Approval Rate Gauge
+        new Chart(document.getElementById('approvalGauge'), {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [parseInt(dData.rate), 100 - parseInt(dData.rate)],
+                    backgroundColor: ['#0089ff', '#edf2f7'],
+                    circumference: 180,
+                    rotation: 270,
+                    borderWidth: 0,
+                    cutout: '85%',
+                    borderRadius: 10
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        // Product Donut
+        new Chart(document.getElementById('productDonut'), {
+            type: 'doughnut',
+            data: {
+                labels: pLabels,
+                datasets: [{
+                    data: pCounts,
+                    backgroundColor: ['#0496ff', '#004e92', '#8338ec', '#ff006e', '#fb5607', '#ffbe0b'],
+                    borderWidth: 0,
+                    cutout: '70%'
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        // Trend Line Chart
+        new Chart(document.getElementById('trendLine'), {
+            type: 'line',
+            data: {
+                labels: tLabels,
+                datasets: [{
+                    label: 'Approved Amount',
+                    data: tAmounts,
+                    borderColor: '#48bb78',
+                    backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#48bb78'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { borderDash: [5, 5] }, ticks: { font: { size: 10 } } },
+                    x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

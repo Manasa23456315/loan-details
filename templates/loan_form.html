@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ loan_type }} Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 50px;
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ loan_type }} Application Form</h1>
+
+    <form action="{{ url_for('loan_form') }}?loan_type={{ loan_type }}" method="POST" enctype="multipart/form-data">
+        <label>Name:</label>
+        <input type="text" name="name" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" required>
+
+        <label>Amount:</label>
+        <input type="number" name="amount" required>
+
+        <label>Phone no:</label>
+        <input type="number" name="phone" required>
+
+        <label>Address:</label>
+        <input type="text" name="address" required>
+
+        <input type="hidden" name="loan_type" value="{{ loan_type }}">
+
+        <button type="submit">Submit Application</button>
+    </form>
+</body>
+</html>

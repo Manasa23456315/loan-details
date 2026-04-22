@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banku - Loan Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a3ffc;
+            --primary-light: #f4eeff;
+            --bg: #f8f7fd;
+            --white: #ffffff;
+            --text-main: #1a1d23;
+            --text-muted: #9ba1ad;
+            --green: #48bb78;
+            --orange: #ed8936;
+            --red: #f56565;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+
+        .container { max-width: 600px; width: 100%; }
+
+        .card { background: white; padding: 2.5rem; border-radius: 32px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
+
+        .header { text-align: center; margin-bottom: 2.5rem; }
+        .header h1 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
+        .header p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.6rem; color: #4a5568; }
+        .form-group input { width: 100%; padding: 1rem; border: 2px solid #edf2f7; border-radius: 14px; outline: none; transition: all 0.3s; }
+        .form-group input:focus { border-color: var(--primary); }
+
+        .btn-track { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-top: 1rem; }
+        .btn-track:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(138, 63, 252, 0.3); }
+
+        .result-section { margin-top: 3rem; border-top: 1px solid #edf2f7; padding-top: 2rem; }
+
+        .tracking-status { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        /* Status Stepper */
+        .stepper { display: flex; flex-direction: column; gap: 2rem; position: relative; margin-top: 1.5rem; }
+        .stepper::before { content: ''; position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background: #edf2f7; z-index: 1; }
+
+        .step { display: flex; gap: 1.5rem; position: relative; z-index: 2; align-items: center; }
+        .step-icon { width: 40px; height: 40px; border-radius: 50%; background: white; border: 2px solid #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #cbd5e0; transition: all 0.3s; }
+        .step.active .step-icon { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 0 15px rgba(138, 63, 252, 0.4); }
+        .step.completed .step-icon { background: var(--green); border-color: var(--green); color: white; }
+        .step.rejected .step-icon { background: var(--red); border-color: var(--red); color: white; }
+
+        .step-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .step-content p { font-size: 0.8rem; color: var(--text-muted); }
+
+        .status-badge { display: inline-block; padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.8rem; font-weight: 700; margin-top: 1rem; }
+        .badge-pending { background: #fffaf0; color: #b7791f; }
+        .badge-approved { background: #f0fff4; color: #2f855a; }
+        .badge-rejected { background: #fff5f5; color: #c53030; }
+
+        .back-link { display: block; text-align: center; margin-top: 2rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+        .back-link:hover { color: var(--primary); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>Track Application</h1>
+                <p>Enter your details to check your loan status</p>
+            </div>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label>Gmail</label>
+                    <input type="email" name="gmail" placeholder="example@gmail.com" required>
+                </div>
+                <button type="submit" class="btn-track">Track Status</button>
+            </form>
+
+            {% if result %}
+            <div class="result-section">
+                <div class="tracking-status">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h3>Application Status</h3>
+                        <span class="status-badge badge-{{ result.status|lower }}">
+                            {{ result.status }}
+                        </span>
+                    </div>
+
+                    <div class="stepper">
+                        <!-- Step 1: Submission -->
+                        <div class="step completed">
+                            <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+                            <div class="step-content">
+                                <h4>Submitted</h4>
+                                <p>Application received successfully</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Verification -->
+                        <div class="step {% if result.status == 'pending' %}active{% else %}completed{% endif %}">
+                            <div class="step-icon"><i class="fas fa-search-dollar"></i></div>
+                            <div class="step-content">
+                                <h4>Verification</h4>
+                                <p>KYC and Document Review</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Decision -->
+                        {% if result.status == 'Approved' %}
+                        <div class="step active completed">
+                            <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="step-content">
+                                <h4>Sanctioned</h4>
+                                <p>{{ result.reason }}</p>
+                            </div>
+                        </div>
+                        {% elif result.status == 'Rejected' %}
+                        <div class="step active rejected">
+                            <div class="step-icon"><i class="fas fa-times-circle"></i></div>
+                            <div class="step-content">
+                                <h4>Rejected</h4>
+                                <p>{{ result.reason }}</p>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="step">
+                            <div class="step-icon"><i class="fas fa-clock"></i></div>
+                            <div class="step-content">
+                                <h4>Final Approval</h4>
+                                <p>Awaiting credit officer decision</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>

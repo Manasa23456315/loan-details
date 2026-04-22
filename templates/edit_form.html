@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Loan Application</title>
+</head>
+<body>
+    <h2>Edit Loan Application</h2>
+    <form method="POST" enctype="multipart/form-data">
+    <label>Name:</label>
+    <input type="text" name="name" value="{{ record['name'] }}" required><br><br>
+
+    <label>Email:</label>
+    <input type="email" name="email" value="{{ record['email'] }}" required><br><br>
+
+    <label>Amount:</label>
+    <input type="number" name="amount" value="{{ record['amount'] }}" required><br><br>
+
+    <label>Status:</label>
+    <select name="status">
+        <option value="Pending" {% if record['status'] == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="Completed" {% if record['status'] == 'Completed' %}selected{% endif %}>Completed</option>
+    </select><br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agriculture Loan Application</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: rgba(255, 158, 47, 0.438);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: rgba(0, 174, 255, 0.582);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+    }
+    form {
+      max-width: 500px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background: #2c3e50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1a252f;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Agriculture Loan Application Form</h1>
+    <p>Please fill in the details below to apply</p>
+  </header>
+
+  <form action="{{ url_for('agriculture_submit') }}" method="POST" enctype="multipart/form-data">
+    <label>Username</label>
+    <input type="text" name="name" required>
+
+    <label>Gmail</label>
+    <input type="Gmail" name="Gmail" required>
+
+    <label>Phone Number</label>
+    <input type="tel" name="phone" required>
+
+    <label>Type of Farming</label>
+    <select name="farming" required>
+      <option value="">--Select--</option>
+      <option value="crop">Crop Farming</option>
+      <option value="dairy">Dairy Farming</option>
+      <option value="poultry">Poultry</option>
+      <option value="horticulture">Horticulture</option>
+    </select>
+
+    <label>Farm Land Size (in acres)</label>
+    <input type="number" name="land" required>
+
+    <label>CIBIL Score</label>
+    <input type="number" name="cibil_score" placeholder="Enter your CIBIL score" required min="300" max="900">
+
+    <label>Loan Amount Requested</label>
+    <input type="number" name="amount" required>
+    <label>Identity Proof:</label>
+    <input type="file" name="identity_file" required>
+    <label>Income Proof:</label>
+    <input type="file" name="income_file" required>
+    <label>Loan Documents:</label>
+    <input type="file" name="loan_file" required>
+    <label>Purpose of Loan</label>
+    <textarea name="purpose" rows="3"></textarea>
+
+    <button type="submit">Submit Application</button>
+  </form>
+</body>
+</html>
+

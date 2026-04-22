@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banku - Select Loan Type</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a3ffc;
+            --primary-light: #f4eeff;
+            --bg: #f8f7fd;
+            --white: #ffffff;
+            --text-main: #1a1d23;
+            --text-muted: #9ba1ad;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); padding: 4rem 2rem; }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .header { text-align: center; margin-bottom: 4rem; }
+        .header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--primary); }
+        .header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .loan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .loan-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .loan-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(138, 63, 252, 0.1);
+        }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .loan-card:hover .icon-box {
+            background: var(--primary);
+            color: white;
+        }
+
+        .loan-card h3 { font-size: 1.25rem; font-weight: 600; }
+        .loan-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+        .top-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            background: white;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover { background: var(--primary); color: white; }
+        .nav-btn.active { background: var(--primary); color: white; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="/" class="nav-btn"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="/loan-tracking" class="nav-btn"><i class="fas fa-search-location"></i> Tracking</a>
+            <a href="/admin" class="nav-btn"><i class="fas fa-user-lock"></i> Admin</a>
+        </div>
+
+        <div class="header">
+            <h1>Select Your Loan Type</h1>
+            <p>Flexible financing solutions tailored to your needs</p>
+        </div>
+
+        <div class="loan-grid">
+            <a href="/details/education" class="loan-card">
+                <div class="icon-box"><i class="fas fa-user-graduate"></i></div>
+                <h3>Education Loan</h3>
+                <p>Invest in your future with competitive rates for students.</p>
+            </a>
+            <a href="/details/personal" class="loan-card">
+                <div class="icon-box"><i class="fas fa-user-tie"></i></div>
+                <h3>Personal Loan</h3>
+                <p>Quick funds for your personal needs with minimal documentation.</p>
+            </a>
+            <a href="/details/home" class="loan-card">
+                <div class="icon-box"><i class="fas fa-home"></i></div>
+                <h3>Home Loan</h3>
+                <p>Build your dream home with our easy financing options.</p>
+            </a>
+            <a href="/details/business" class="loan-card">
+                <div class="icon-box"><i class="fas fa-briefcase"></i></div>
+                <h3>Business Loan</h3>
+                <p>Fuel your business growth with our tailored financial support.</p>
+            </a>
+            <a href="/details/consumer" class="loan-card">
+                <div class="icon-box"><i class="fas fa-shopping-cart"></i></div>
+                <h3>Consumer Loan</h3>
+                <p>Finance your electronics, furniture, and other essentials.</p>
+            </a>
+            <a href="/details/gold" class="loan-card">
+                <div class="icon-box"><i class="fas fa-coins"></i></div>
+                <h3>Gold Loan</h3>
+                <p>Instant cash against your gold jewelry with low interest.</p>
+            </a>
+            <a href="/details/credit" class="loan-card">
+                <div class="icon-box"><i class="fas fa-credit-card"></i></div>
+                <h3>Credit Card Loan</h3>
+                <p>Unlock more purchasing power with our flexible credit cards.</p>
+            </a>
+            <a href="/details/vehicle" class="loan-card">
+                <div class="icon-box"><i class="fas fa-car"></i></div>
+                <h3>Vehicle Loan</h3>
+                <p>Drive your favorite car home today with our auto loans.</p>
+            </a>
+            <a href="/details/agriculture" class="loan-card">
+                <div class="icon-box"><i class="fas fa-tractor"></i></div>
+                <h3>Agriculture Loan</h3>
+                <p>Support your farming needs with specialized agricultural credit.</p>
+            </a>
+            <a href="/details/mortgage" class="loan-card">
+                <div class="icon-box"><i class="fas fa-building"></i></div>
+                <h3>Mortgage Loan</h3>
+                <p>Leverage your property value for larger financial requirements.</p>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
